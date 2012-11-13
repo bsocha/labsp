@@ -45,10 +45,21 @@ find /etc\(-type d -and ! empty\) -or \(-type f -and -name a*\) 2> /dev/null
 
 ##Laboratorium 6
 
+Zadanie 1:
+```sh
+grep . {1,} plik.txt
+```
+
 Zadanie 2:
 ```sh
 grep ^[0-9] pl*
 ```
+
+Zadanie 3:
+```sh
+ls -1 | grep -E '.{8}r.'
+```
+
 Zadanie 4:
 ```sh
 grep -c bash /etc/passwd
