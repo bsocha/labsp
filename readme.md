@@ -21,7 +21,52 @@ chmod u=rw program.c
 chmod g=r program.c
 ```
 
-##Laboratorium 4
+##Laboratorium 3:
+
+Zadanie 1:
+```sh
+more -5 /etc/passwd
+```
+
+Zadanie 2:
+```sh
+cat tekst1.txt - tekst2.txt > tekst3.txt
+```
+
+Zadanie 3:
+```sh
+head $HOME/* -n 5 -q
+```
+
+Zadanie 4:
+```sh
+head -n 5 /etc/passwd |tail -n 3
+```
+Zadanie 5:
+```sh
+tail -n 7 /etc/passwd | head -n 3
+```
+Zadanie 6:
+```sh
+cat /etc/passwd |tr "n" " "
+```
+
+Zadanie 7:
+```sh
+cat plik.txt | tr " \t" "\n"
+```
+
+Zadanie 8:
+```sh
+head -n 0 /etc/* | tr -s '[n*2]' 'n' | wc -l
+```
+
+Zadanie 9:
+```sh
+cut /etc/passwd | head -n 3 | wc -n
+```
+
+##Laboratorium 4:
 
 Zadanie 1:
 ```sh
