@@ -17,8 +17,35 @@ grep 'main' program.c
 
 Zadanie 4:
 ```sh
-chmod u=rw program.c
-chmod g=r program.c
+chmod u+rw program.c
+chmod g+r program.c
+chmod o-rwx program.c
+```
+
+Zadanie 5:
+```sh
+mv dom/wazne-sprawy/ praca/
+```
+
+Zadanie 6:
+```sh
+zip -r temp.zip temp
+```
+
+Zadanie 7:
+```sh
+rm -R temp
+```
+
+Zadanie 8:
+```sh
+tar xf temp.tar
+unzip temp.zip
+```
+
+Zadanie 9:
+```sh
+
 ```
 
 ##Laboratorium 3:
