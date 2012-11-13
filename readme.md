@@ -102,7 +102,7 @@ ls | tr a-z A-Z
 
 Zadanie 2:
 ```sh
-ls -l | cut -b 1-10,30-34,47-
+find . -printf "Plik: %f Rozmiar: %s Prawa: %M \n" -maxdepth 1
 ```
 
 Zadanie 3:
