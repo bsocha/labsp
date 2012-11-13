@@ -52,9 +52,6 @@ Zadanie 6:
 ```sh
 find / -printf "%u\n" 2> /dev/null | sort | uniq -c
 ```
-```sh
-cat /etc/passwd/ | sort --reverse --general-numeric-sort
-```
 
 ##Laboratorium 5:
 
