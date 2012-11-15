@@ -1,3 +1,16 @@
+## Laboratorium 1:
+
+Zadanie 10:
+```sh
+cal -3m
+cal 11 2009 -3m
+```
+
+Zadanie 11:
+```sh
+date -d 1975-05-25 +%A
+```
+
 ## Laboratorium 2:
 
 Zadanie 1:
