@@ -186,3 +186,15 @@ Zadanie 5:
 ```sh
 grep [IVXLCDM] plik.txt
 ```
+
+Zadanie 6:
+```sh
+touch xaa xab xac
+rm x??
+ls x*
+```
+
+Zadanie 7:
+```sh
+mkdir `date +%Y-%m-%d`
+```
