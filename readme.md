@@ -56,11 +56,6 @@ tar xf temp.tar
 unzip temp.zip
 ```
 
-Zadanie 9:
-```sh
-
-```
-
 ##Laboratorium 3:
 
 Zadanie 1:
@@ -136,6 +131,11 @@ cat /etc/passwd | sort -r --field-separator=":" -g -k 4,3
 Zadanie 6:
 ```sh
 find / -printf "%u\n" 2> /dev/null | sort | uniq -c
+```
+
+Zadanie 7:
+```sh
+find -printf "%m\n" | sort | uniq -c
 ```
 
 ##Laboratorium 5:
