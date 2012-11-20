@@ -160,6 +160,18 @@ Zadanie 4:
 find /etc\(-type d -and ! empty\) -or \(-type f -and -name a*\) 2> /dev/null
 ```
 
+Zadanie 5:
+```sh
+touch xaa xab xac
+rm x??
+ls x*
+```
+
+Zadanie 6:
+```sh
+mkdir `date +%Y-%m-%d`
+```
+
 ##Laboratorium 6
 
 Zadanie 1:
@@ -185,16 +197,4 @@ grep -c bash /etc/passwd
 Zadanie 5:
 ```sh
 grep [IVXLCDM] plik.txt
-```
-
-Zadanie 6:
-```sh
-touch xaa xab xac
-rm x??
-ls x*
-```
-
-Zadanie 7:
-```sh
-mkdir `date +%Y-%m-%d`
 ```
