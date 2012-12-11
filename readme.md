@@ -172,7 +172,7 @@ Zadanie 6:
 mkdir `date +%Y-%m-%d`
 ```
 
-##Laboratorium 6
+##Laboratorium 6:
 
 Zadanie 1:
 ```sh
@@ -197,4 +197,79 @@ grep -c bash /etc/passwd
 Zadanie 5:
 ```sh
 grep [IVXLCDM] plik.txt
+```
+
+##Laboratorium 7:
+
+Zadanie 1:
+```sh
+#!/bin/bash
+
+pliki=(`find \`pwd\` -iname "*.htm" `)
+for file in ${pliki[*]}
+do
+    NowyPlik=`echo $file | tr " " "_"`
+    mv "$file"  "$fileN"
+done
+```
+
+Zadanie 2:
+```sh
+#!/bin/bash
+if [ "$1" == "" ]
+then
+  echo "Użycie skryptu $0 błędne. Prawdopodbnie nie podałes argumentu"
+  exit 1
+fi
+silnia() {
+  s=1
+  N=$1
+  while [ $N -ge 1 ]
+  do
+    s=$[$s * $N]
+    N=$[$N - 1]
+  done
+  echo $s
+}
+  silnia $1
+  sil='silnia $1'
+  echo 'Silnia = ' $sil
+```
+
+Zadanie 3:
+```sh
+ #!/bin/bash
+if [ "$1" == "" ]
+then
+  echo "Użycie skryptu $0 błędne. Prawdopodbnie nie podałes argumentu"
+  exit 1
+fi
+  login=$1
+  echo 'Witaj' $login
+  echo 'Twoja statystyka: '
+  echo 'Host: ' $HOSTNAME
+  echo 'System: ' $OSTYPE
+  echo 'Aktualny katalog: ' $PWD
+  echo 'Katalog pocztowy: ' $MAIL
+  echo 'Powloka: ' $SHELL
+  echo 'UID: ' $UID
+  echo 'Typ terminala: ' $TERM
+  echo 'Architektury sprzętowa: ' $MACHTYPE
+  echo 'Domyślny edytor: ' $EDITOR
+  echo 'Zalogowano jako: ' $USER
+```
+
+Zadanie 4:
+```sh
+#!/bin/bash
+
+`find ~ -name "core" -ctime +3  -type f | xargs -I file rm "$file" `
+```
+
+Zadanie 5:
+```sh
+#!/bin/bash
+echo $1
+date +%H:%M:%S
+whoami
 ```
