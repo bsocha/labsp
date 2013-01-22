@@ -3,6 +3,8 @@
 clear
 echo "Wybierz stacje radiowa"
 echo ""
+echo "W razie potrzeby wpisac => mplayer -h <= gdyz skrypt bazuje na mplayerze"
+echo ""
 select radio in RMF' 'FM Nagrywanie' 'RMF' 'FM RMF' 'Classic Nagrywanie' 'RMF' 'Classic RMF' '80s Nagrywanie' 'RMF' '80s RMF' '90s Nagrywanie' 'RMF' '90s RMF' '2000 Nagrywanie' 'RMF' '2000 RMF' 'Reggae Nagrywanie' 'RMF' 'Reggae Eska' 'Rock Nagrywanie' 'Eska' 'Rock Zlote' 'Przeboje Nagrywanie' 'Zlote' 'Przeboje Planeta' 'FM Nagrywanie' 'Planeta' 'FM Zakoncz
 
 do
