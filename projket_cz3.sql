@@ -235,4 +235,37 @@ END
 GO
 
 13.
-CREATE TRIGGER 
+CREATE TRIGGER zamiast_delete ON typ
+INSTEAD OF DELETE
+AS
+	DECLARE @idtyp INT;
+	DECLARE @dlugosc INT;
+	DECLARE @szerokosc INT;
+	DECLARE @wysokosc INT;
+	DECLARE @pojemnosc INT;
+	
+	SELECT @idtyp=d.idtyp FROM deleted d;
+	SELECT @dlugosc=d.dlugosc FROM deleted d;
+	SELECT @szerokosc=d.szerokosc FROM deleted d;
+	SELECT @wysokosc=d.wysokosc FROM deleted d;
+	SELECT @pojemnosc=d.pojemnosc FROM deleted d;
+	
+	BEGIN
+		IF(@pojemnosc < 400)
+		BEGIN
+			RAISERROR('NIE MOZNA USUNAC POJEMNOSC < 400',16,1);
+			ROLLBACK;
+		END
+		ELSE
+		BEGIN
+			DELETE FROM typ where idtyp=@idtyp;
+			COMMIT;
+			INSERT INTO typ(idtyp,dlugosc,szerokosc,wysokosc,pojemnosc,a_akcja,a_czas)
+			VALUES(@idtyp,@dlugosc,@szerokosc,@wysokosc,@pojemnosc,'Deleted -- Instead Of Delete Trigger.',getdate());
+			PRINT 'Record Deleted -- Instead Of Delete Trigger.'
+		END
+	END
+GO
+
+DELETE FROM typ WHERE idtyp=4;
+GO
