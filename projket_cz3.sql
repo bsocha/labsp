@@ -1,4 +1,4 @@
-1.
+--1) widok 1
 IF EXISTS (SELECT * FROM SYS.views WHERE name='Mechanicy')
 DROP VIEW Mechanicy;
 GO
@@ -7,7 +7,7 @@ CREATE VIEW Mechanicy
 AS
 SELECT s.nazwa, COUNT(p.idpracownik) AS ilosc
 FROM pracownik p JOIN stanowisko s 
-  ON p.idstanowisko=s.idstanowisko
+	ON p.idstanowisko=s.idstanowisko
 	GROUP BY s.nazwa
 HAVING COUNT(p.idstanowisko)>1;
 GO
@@ -17,7 +17,7 @@ FROM Mechanicy
 ORDER BY ilosc DESC;
 GO
 
-2.
+--2) widok 2
 IF EXISTS (SELECT * FROM SYS.views WHERE name='BOX')
 DROP VIEW BOX;
 GO
@@ -36,7 +36,7 @@ FROM BOX
 ORDER BY cena DESC;
 GO
 
-3.
+--3) funkcja 1
 CREATE FUNCTION ilu
 (
 	@idklient INT
@@ -57,7 +57,7 @@ FROM klient
 WHERE dbo.ilu(idklient)>0;
 GO
 
-4.
+--4) funkcja 2
 CREATE FUNCTION wymiary
 (	
 	@dlugosc varchar(10),
@@ -80,7 +80,7 @@ FROM egzemplarz e JOIN typ t
 ORDER BY e.cena;
 GO
 
-5.
+--5) funkcja 3
 CREATE FUNCTION wiek_prac
 (	
 	@data_ur DATETIME
@@ -101,14 +101,14 @@ FROM pracownik p JOIN stanowisko s
 ORDER BY wiek_pracownika;
 GO
 
-6.
+--6) funkcja 4
 CREATE FUNCTION roznica_pensji_brutto() 
 RETURNS INT
 BEGIN
 	RETURN (SELECT MAX(brutto)-MIN(brutto) from pensja) 
 END;
 GO
-SELECT dbo.roznica_pensji_brutto() AS roznica;
+SELECT dbo.roznica_pensji_brutto() AS roznica_b;
 GO
 CREATE FUNCTION roznica_pensji_netto() 
 RETURNS INT
@@ -116,10 +116,10 @@ BEGIN
 	RETURN (SELECT MAX(netto)-MIN(netto) from pensja) 
 END;
 GO
-SELECT dbo.roznica_pensji_netto() AS roznica;
+SELECT dbo.roznica_pensji_netto() AS roznica_n;
 GO
 
-7.
+--7) procedura 1
 SELECT p.imie, p.nazwisko, pe.brutto 
 FROM pracownik p JOIN pensja pe
 ON p.idpracownik=pe.idpensja;
@@ -138,7 +138,7 @@ FROM pracownik p JOIN pensja pe
 ON p.idpracownik=pe.idpensja;
 GO
 
-8.
+--8) procedura 2
 CREATE PROCEDURE podwyzka
 @idpensja INT, @nowa_pensja MONEY OUTPUT, @procent INT=10
 AS
@@ -156,7 +156,7 @@ EXECUTE podwyzka 2, @nowa_pensja OUTPUT
 PRINT @nowa_pensja;
 GO
 
-9.
+--9) procedura 3
 CREATE PROCEDURE sr_pensja
 AS
 BEGIN
@@ -170,7 +170,7 @@ EXECUTE @kwota=sr_pensja
 PRINT @kwota;
 GO
 
-10.
+--10) procedura 4
 SELECT p.imie, p.nazwisko, pe.netto 
 FROM pracownik p JOIN pensja pe
 ON p.idpracownik=pe.idpensja;
@@ -189,7 +189,7 @@ FROM pracownik p JOIN pensja pe
 ON p.idpracownik=pe.idpensja;
 GO
 
-11.
+--11) wyzwalacz 1
 CREATE TRIGGER klient_up ON klient
 INSTEAD OF UPDATE
 AS
@@ -211,7 +211,7 @@ BEGIN
 END
 GO
 
-12.
+--12) wyzwalacz 2
 CREATE TRIGGER usuwanie_klientow ON klient
 AFTER DELETE
 AS
@@ -234,7 +234,7 @@ BEGIN
 END
 GO
 
-13.
+--13) wyzwalacz 3
 CREATE TRIGGER zamiast_delete ON typ
 INSTEAD OF DELETE
 AS
@@ -270,7 +270,7 @@ GO
 DELETE FROM typ WHERE idtyp=4;
 GO
 
-14.
+--14) wyzwalacz 4
 CREATE TRIGGER bagazniki_bazowe_del1 ON bagazniki_bazowe
 AFTER DELETE
 AS
@@ -288,4 +288,62 @@ END
 GO
 
 DELETE FROM bagazniki_bazowe WHERE idbagazniki_bazowe=1;
+GO
+
+--15) pivot 1
+SELECT marka, [OCEAN] AS OCEAN, [ECONOMIC] AS ECONOMIC, [EASY] AS EASY, [STELLA] AS STELLA
+FROM 
+(SELECT marka, model, cena 
+FROM egzemplarz ) e
+PIVOT
+(
+SUM (cena)
+FOR model IN
+( [OCEAN], [ECONOMIC], [EASY], [STELLA])
+) AS pvt
+
+--16) pivot 2
+SELECT [MECHANIK] AS MECHANICY, [ELEKTRYK] AS ELEKTRYCY, [ZARZADCA] AS ZARZADCY
+FROM
+(SELECT s.nazwa, p.brutto, p.netto
+FROM stanowisko s JOIN pensja p
+ON s.idpensja=p.idpensja) s
+PIVOT
+(
+SUM(brutto)
+FOR nazwa IN
+([MECHANIK], [ELEKTRYK], [ZARZADCA])
+) AS pvt2
+
+DROP VIEW Mechanicy;
+GO
+DROP VIEW BOX;
+GO
+DROP FUNCTION ilu;
+GO
+DROP FUNCTION wymiary;
+GO
+DROP FUNCTION wiek_prac;
+GO
+DROP FUNCTION roznica_pensji_brutto;
+GO
+DROP FUNCTION roznica_pensji_netto;
+GO
+DROP PROCEDURE zwieksz_pensje_brutto;
+GO
+DROP PROCEDURE podwyzka;
+GO
+DROP PROCEDURE sr_pensja;
+GO
+DROP PROCEDURE zwieksz_pensje_netto;
+GO
+DROP TRIGGER klient_up;
+GO
+DROP TRIGGER usuwanie_klientow;
+GO
+DROP TRIGGER zamiast_delete;
+GO
+DROP TRIGGER bagazniki_bazowe_del1;
+GO
+DROP TRIGGER bagazniki_bazowe_del2;
 GO
