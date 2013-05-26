@@ -269,3 +269,23 @@ GO
 
 DELETE FROM typ WHERE idtyp=4;
 GO
+
+14.
+CREATE TRIGGER bagazniki_bazowe_del1 ON bagazniki_bazowe
+AFTER DELETE
+AS
+BEGIN
+	PRINT 'Usunięto '+STR(@@ROWCOUNT)+' rekordów.'
+END
+GO
+
+CREATE TRIGGER bagazniki_bazowe_del2 ON bagazniki_bazowe
+AFTER DELETE
+AS
+BEGIN
+	PRINT 'Rekordy usnięto z bazy danych '+DB_NAME()
+END
+GO
+
+DELETE FROM bagazniki_bazowe WHERE idbagazniki_bazowe=1;
+GO
