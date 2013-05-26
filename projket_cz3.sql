@@ -260,7 +260,7 @@ AS
 		BEGIN
 			DELETE FROM typ where idtyp=@idtyp;
 			COMMIT;
-			INSERT INTO typ(idtyp,dlugosc,szerokosc,wysokosc,pojemnosc,a_akcja,a_czas)
+			INSERT INTO typ_t(idtyp,dlugosc,szerokosc,wysokosc,pojemnosc,inf,data)
 			VALUES(@idtyp,@dlugosc,@szerokosc,@wysokosc,@pojemnosc,'Deleted -- Instead Of Delete Trigger.',getdate());
 			PRINT 'Record Deleted -- Instead Of Delete Trigger.'
 		END
