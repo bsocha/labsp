@@ -310,7 +310,7 @@ FROM stanowisko s JOIN pensja p
 ON s.idpensja=p.idpensja) s
 PIVOT
 (
-SUM(brutto)
+AVG(brutto)
 FOR nazwa IN
 ([MECHANIK], [ELEKTRYK], [ZARZADCA])
 ) AS pvt2
