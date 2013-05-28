@@ -194,20 +194,30 @@ ON p.idpracownik=pe.idpensja;
 GO
 
 --11) wyzwalacz 1
-CREATE TRIGGER klient_up ON klient
+CREATE VIEW wklient
+AS
+SELECT k.idklient AS id, k.imie, k.nazwisko,
+COUNT(k.idauto) AS ilosc
+FROM klient k LEFT JOIN auto a 
+	ON k.idauto=a.idauto
+	GROUP BY k.idklient, k.imie, k.nazwisko;
+GO
+CREATE TRIGGER wklient_up ON wklient
 INSTEAD OF UPDATE
 AS
 BEGIN
 	DECLARE kursor_up CURSOR
-	FOR SELECT idklient, idauto, idadres, imie, nazwisko, nr_tel FROM INSERTED
-	DECLARE @idklient INT, @idauto INT, @idadres INT, @imie VARCHAR(45), @nazwisko VARCHAR(45), @nr_tel VARCHAR(11)
+	FOR SELECT id, imie, nazwisko FROM INSERTED
+	DECLARE @id INT, @imie VARCHAR(45), @nazwisko VARCHAR(45)
 	
 	OPEN kursor_up
-	FETCH NEXT FROM kursor_up INTO @idklient, @idauto, @idadres, @imie, @nazwisko, @nr_tel
+	FETCH NEXT FROM kursor_up INTO @id, @imie, @nazwisko
 	
 	WHILE @@FETCH_STATUS = 0
 	BEGIN
-		UPDATE klient SET imie=@imie, nazwisko=@nazwisko, nr_tel=@nr_tel
+		UPDATE klient SET imie=@imie, nazwisko=@nazwisko
+		WHERE idklient=@id
+		FETCH NEXT FROM kursor_up INTO @id, @imie, @nazwisko
 	END
 	
 	CLOSE kursor_up
@@ -215,11 +225,15 @@ BEGIN
 END
 GO
 -- test
-SELECT imie FROM klient;
+SELECT id, imie, nazwisko, ilosc
+FROM wklient
+ORDER BY id ASC;
 GO
-UPDATE klient SET imie='JERZY' WHERE idklient=2;
+UPDATE wklient SET imie='JERZY' WHERE id=2;
 GO
-SELECT imie FROM klient;
+SELECT id, imie, nazwisko, ilosc
+FROM wklient
+ORDER BY id ASC;
 GO
 
 --12) wyzwalacz 2
@@ -351,7 +365,7 @@ DROP PROCEDURE sr_pensja;
 GO
 DROP PROCEDURE zwieksz_pensje_netto;
 GO
-DROP TRIGGER klient_up;
+DROP TRIGGER wklient_up;
 GO
 DROP TRIGGER usuwanie_klientow;
 GO
