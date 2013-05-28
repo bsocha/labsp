@@ -11,7 +11,7 @@ FROM pracownik p JOIN stanowisko s
 	GROUP BY s.nazwa
 HAVING COUNT(p.idstanowisko)>1;
 GO
-
+-- test
 SELECT ilosc, nazwa
 FROM Mechanicy
 ORDER BY ilosc DESC;
@@ -30,7 +30,7 @@ FROM auto a JOIN egzemplarz e
 	GROUP BY a.marka, a.model, a.typ_nadwozia, e.cena
 HAVING COUNT(e.idegzemplarz)>0;
 GO
-
+-- test
 SELECT marka, model, typ_nadwozia, cena, ilosc
 FROM BOX
 ORDER BY cena DESC;
@@ -51,7 +51,7 @@ BEGIN
 	RETURN @ilu;
   END;
 GO
-
+-- test
 SELECT imie, nazwisko, dbo.ilu(idklient) AS ile_samochodow
 FROM klient
 WHERE dbo.ilu(idklient)>0;
@@ -72,9 +72,9 @@ BEGIN
 	RETURN @wymiary
 END;
 GO
-
+-- test
 SELECT e.marka, e.model, e.cena, dbo.wymiary(dlugosc,szerokosc,wysokosc) 
-AS WYMIARY
+AS DLUxSZExWYS
 FROM egzemplarz e JOIN typ t
 	ON e.idtyp=t.idtyp
 ORDER BY e.cena;
@@ -83,19 +83,18 @@ GO
 --5) funkcja 3
 CREATE FUNCTION wiek_prac
 (	
-	@data_ur DATETIME
+	@rok_ur varchar(4)
 )
-RETURNS DATETIME
+RETURNS varchar(4)
 AS
 BEGIN
-	DECLARE @wiek_prac DATETIME
-	SET @wiek_prac=GETDATE()-@data_ur
+	DECLARE @wiek_prac varchar(4)
+	SET @wiek_prac=2013-@rok_ur
 	RETURN @wiek_prac
 END;
 GO
-
-SELECT p.imie, p.nazwisko, s.nazwa, dbo.wiek_prac(data_ur) 
-AS wiek_pracownika
+-- test
+SELECT p.imie, p.nazwisko, s.nazwa, dbo.wiek_prac(rok_ur) AS wiek_pracownika
 FROM pracownik p JOIN stanowisko s
 	ON p.idstanowisko=s.idstanowisko
 ORDER BY wiek_pracownika;
@@ -108,15 +107,16 @@ BEGIN
 	RETURN (SELECT MAX(brutto)-MIN(brutto) from pensja) 
 END;
 GO
-SELECT dbo.roznica_pensji_brutto() AS roznica_b;
-GO
 CREATE FUNCTION roznica_pensji_netto() 
 RETURNS INT
 BEGIN
 	RETURN (SELECT MAX(netto)-MIN(netto) from pensja) 
 END;
 GO
-SELECT dbo.roznica_pensji_netto() AS roznica_n;
+-- test
+SELECT dbo.roznica_pensji_netto() AS roznica_netto;
+GO
+SELECT dbo.roznica_pensji_brutto() AS roznica_brutto;
 GO
 
 --7) procedura 1
@@ -133,6 +133,7 @@ WHERE idpensja=@idpensja;
 GO
 EXECUTE zwieksz_pensje_brutto 2, 100;
 GO
+-- test
 SELECT p.imie, p.nazwisko, pe.brutto 
 FROM pracownik p JOIN pensja pe
 ON p.idpracownik=pe.idpensja;
@@ -151,6 +152,7 @@ BEGIN
 	WHERE idpensja=@idpensja
 END;
 GO
+-- test
 DECLARE @nowa_pensja MONEY
 EXECUTE podwyzka 2, @nowa_pensja OUTPUT
 PRINT @nowa_pensja;
@@ -165,6 +167,7 @@ BEGIN
 	RETURN @sr
 END;
 GO
+-- test
 DECLARE @kwota MONEY
 EXECUTE @kwota=sr_pensja
 PRINT @kwota;
@@ -184,6 +187,7 @@ WHERE idpensja=@idpensja;
 GO
 EXECUTE zwieksz_pensje_netto 4, 200;
 GO
+-- test
 SELECT p.imie, p.nazwisko, pe.netto 
 FROM pracownik p JOIN pensja pe
 ON p.idpracownik=pe.idpensja;
@@ -210,6 +214,13 @@ BEGIN
 	DEALLOCATE kursor_up
 END
 GO
+-- test
+SELECT imie FROM klient;
+GO
+UPDATE klient SET imie='JERZY' WHERE idklient=2;
+GO
+SELECT imie FROM klient;
+GO
 
 --12) wyzwalacz 2
 CREATE TRIGGER usuwanie_klientow ON klient
@@ -232,6 +243,9 @@ BEGIN
 	CLOSE kursor_deleted
 	DEALLOCATE kursor_deleted
 END
+GO
+-- test
+DELETE FROM klient where idklient=1;
 GO
 
 --13) wyzwalacz 3
@@ -266,7 +280,7 @@ AS
 		END
 	END
 GO
-
+-- test
 DELETE FROM typ WHERE idtyp=4;
 GO
 
@@ -286,7 +300,7 @@ BEGIN
 	PRINT 'Rekordy usnięto z bazy danych '+DB_NAME()
 END
 GO
-
+-- test
 DELETE FROM bagazniki_bazowe WHERE idbagazniki_bazowe=1;
 GO
 
